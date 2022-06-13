@@ -10,16 +10,11 @@ import cv2 as cv
 from collections import namedtuple
 from torch.optim.lr_scheduler import ExponentialLR
 
-from metaverse.trackers import Tracker
+from uav.trackers import Tracker
 
 
 class SiamFC(nn.Module):
-    """
-    SiamFC网络结构
-    """
-
     def __init__(self):
-        """初始化SiamFC"""
         super(SiamFC, self).__init__()
         self.feature = nn.Sequential(
             # conv1
@@ -60,7 +55,6 @@ class SiamFC(nn.Module):
         return out
 
     def _initialize_weights(self):
-        """初始化权重"""
         for m in self.modules():
             if isinstance(m, nn.Conv2d): 
                 init.kaiming_normal_(m.weight.data, mode='fan_out',
@@ -178,8 +172,6 @@ class TrackerSiamFC(Tracker):
             self.kernel = self.net.feature(exemplar_image)
 
     def update(self, image):
-        """在当前帧运行tracker,传入当前帧的图片信息
-        在父类Tracker中未编写update函数，在此处进行自定义"""
         image = np.asarray(image)
         height = image.shape[0]
         width = image.shape[1]
@@ -237,7 +229,6 @@ class TrackerSiamFC(Tracker):
             self.center[0] + 1 - (self.target_sz[0] - 1) / 2,
             self.target_sz[1], self.target_sz[0]])
         
-        """确保SiamFC在画面内搜索"""
         if box[0] < 0 or box[1] < 0 or box[0]+box[2] > width or box[1]+box[3] > height:
             box = np.array([0,0,0,0])
         return box
