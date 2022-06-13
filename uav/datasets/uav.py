@@ -8,13 +8,13 @@ import json
 
 
 class UAV(object):
-    r"""`VideoCube <http://videocube.aitestunion.com>`_ Dataset.
+    r"""UAV Dataset.
     
     Args:
         root_dir (string): Root directory of dataset where ``train``,
             ``val`` and ``test`` folders exist.
         subset (string, optional): Specify ``train``, ``val`` or ``test``
-            subset of VideoCube.
+            subset of UAV.
     """
     def __init__(self, root_dir, subset):
         super(UAV, self).__init__()
@@ -22,7 +22,7 @@ class UAV(object):
         self.subset = subset
 
         f = open(os.path.join(self.root_dir,'attribute','uav_info.json'),'r',encoding='utf-8')
-        self.infos = json.load(f)['all']            
+        self.infos = json.load(f)['competition']            
         f.close() 
 
         self.seq_names = self.infos[self.subset]
@@ -39,9 +39,7 @@ class UAV(object):
         Returns:
             tuple:
                 (img_files, anno, restart_flag), where ``img_files`` is a list of
-                file names, ``anno`` is a N x 4 (rectangles) numpy array, while
-                ``restart_flag`` is a list of
-                restart frames.
+                file names, ``anno`` is a N x 4 (rectangles) numpy array
         """
         if isinstance(index, six.string_types):
             if not index in self.seq_names:
@@ -51,6 +49,7 @@ class UAV(object):
         img_files = sorted(glob.glob(os.path.join(
             self.seq_dirs[index], '*.jpg')))
         anno = np.loadtxt(self.anno_files[index], delimiter=',')
+        # The UAV competition does not support the R-OPE mechanism, thus we set the restart_flag as none. If you are interested in R-OPE mechanism, please refer to ``Global Instance Tracking: Locating Target More Like Humans.`` DOI:10.1109/TPAMI.2022.3153312
         restart_flag = []
 
         return img_files, anno, restart_flag

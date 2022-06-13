@@ -1,7 +1,8 @@
 from __future__ import absolute_import, division, print_function
 
 import os
-from time import time
+import time
+import shutil
 import numpy as np
 
 import json
@@ -109,10 +110,46 @@ class ExperimentUAV(object):
         """
         assert isinstance(tracker_names, (list, tuple))
 
-        # if self.subset == 'test':
-        #     print('\033[93m[WARNING]:\n' \
-        #           'The groundtruths of UAV\'s test set is withholded.\033[0m')
-        #     return None
+        if self.subset == 'test':
+            pwd = os.getcwd()
+
+            # generate compressed submission file for each tracker
+            for tracker_name in tracker_names:
+                # compress all tracking results
+                result_dir = os.path.join(self.result_dir, tracker_name, self.subset)
+
+                time_dir = os.path.join(self.time_dir, tracker_name, self.subset)
+
+                submission_dir = os.path.join(self.result_dir, tracker_name, 'submission')
+
+                makedir(submission_dir)
+                makedir(os.path.join(submission_dir, 'result'))
+                makedir(os.path.join(submission_dir, 'time'))
+
+                for result in sorted(os.listdir(result_dir)):
+                    if result.endswith('_%s.txt'%self.repetition):
+                        src_path = os.path.join(result_dir, result)
+                        dst_path = os.path.join(submission_dir, 'result',result[:-6]+'.txt')
+                        print('Copy result to {}'.format(dst_path))
+                        shutil.copyfile(src_path, dst_path)
+                for time in sorted(os.listdir(time_dir)):
+                    if time.endswith('_%s.txt'%self.repetition):
+                        src_path = os.path.join(time_dir, time)
+                        dst_path = os.path.join(submission_dir, 'time', time[:-6]+'.txt')
+                        print('Copy result to {}'.format(dst_path))
+                        shutil.copyfile(src_path, dst_path)    
+
+                compress(submission_dir, submission_dir)
+                print('Records saved at', submission_dir + '.zip')
+
+            # print submission guides
+            print('\033[93m[WARNING]:\n' \
+                  'The groundtruths of UAV\'s test set is withholded.\033[0m')
+
+            # switch back to previous working directory
+            os.chdir(pwd)
+
+            return None
         
         subset_report_dir = os.path.join(self.report_dir, self.subset)
         makedir(subset_report_dir)
@@ -203,7 +240,6 @@ class ExperimentUAV(object):
 
                 data = pd.concat([seq_ious,seq_dious, seq_gious,seq_center_errors,seq_norm_center_errors,flags, absent],axis=1) 
 
-                
                 # Frames without target and transition frames are not included in the evaluation
                 data = data[data.apply(lambda x: x['absent'] == 0, axis=1)]
                 
@@ -571,7 +607,3 @@ class ExperimentUAV(object):
         np.savetxt(record_file, boxes, fmt='%d', delimiter=',')
         np.savetxt(time_file, times, fmt='%.8f', delimiter=',')
         print('Results recorded at', record_file)
-
-
-    def sigmoid(self, x):
-        return 1.0/(1+np.exp(-x))

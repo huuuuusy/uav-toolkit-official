@@ -25,14 +25,15 @@ if __name__ == '__main__':
 
     tracker = TrackerSiamFC(net_path=net_path)
 
-    experiment = ExperimentUAV(root_dir, save_dir, subset, repetitions)
-    experiment.run(tracker, visualize=False, save_img=False)
+    for repetition in range(repetitions):
+        experiment = ExperimentUAV(root_dir, save_dir, subset, repetition+1)
+        experiment.run(tracker, visualize=False, save_img=False)
 
+    """
+    II. EVALUATION
+    """
+    tracker_names = ['SiamFC']
 
-    ### EVALUATION
-    # tracker_names =  ['ATOM','DiMP','ECO','KeepTrack','KYS','MixFormer','PrDiMP','SiamFC','SiamRCNN','SiamRPN','SuperDiMP']
-
-    # subset = 'test'
-
-    # experiment = ExperimentUAV(root_dir, save_dir, subset, 1)
-    # experiment.report(tracker_names)
+    for repetition in range(repetitions):
+        experiment = ExperimentUAV(root_dir, save_dir, subset, repetition+1)
+        experiment.report(tracker_names)
