@@ -21,7 +21,7 @@ class UAV(object):
         self.root_dir = root_dir
         self.subset = subset
 
-        f = open(os.path.join(self.root_dir,'attribute','uav_info.json'),'r',encoding='utf-8')
+        f = open(os.path.join(os.path.split(os.path.realpath(__file__))[0],'uav_info.json'),'r',encoding='utf-8')
         self.infos = json.load(f)['competition']            
         f.close() 
 

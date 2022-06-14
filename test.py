@@ -8,7 +8,7 @@ from tracker.siamfc import TrackerSiamFC
 if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"] = '0'
     # the path of data folder
-    root_dir = "/mnt/second/hushiyu/UAV/"
+    root_dir = "/mnt/second/hushiyu/UAV/zip/competition"
 
     # the path to save the experiment result
     save_dir = os.path.join(root_dir, 'result')

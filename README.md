@@ -16,6 +16,7 @@ This repository contains the official python toolkit for running experiments and
       - [How to Define a Tracker?](#how-to-define-a-tracker)
       - [How to Run Experiments?](#how-to-run-experiments)
       - [How to Evaluate Performance?](#how-to-evaluate-performance)
+    - [Results of SOTA Trackers](#results-of-sota-trackers)
     - [Issues](#issues)
 
 
@@ -67,7 +68,13 @@ chmod 777 unzip-competition
 |  |-- frame_599/
 ```
 
-- Unzip *attribute.zip*. Attention that we only provide properties files for *train* and *val* subsets. For ground-truth files, we only offer the annotation of the first frame to initialize the model. You should upload final results for evaluation.
+- Unzip *attribute.zip*:
+
+```
+unzip attribute.zip -d attribute
+```
+
+- Attention that we only provide properties files for *train* and *val* subsets. For ground-truth files, we only offer the annotation of the first frame to initialize the model. You should upload final results for evaluation.
 
 - Rename and organize folders as follows：
 
@@ -90,7 +97,6 @@ chmod 777 unzip-competition
 |  |  |-- absent/
 |  |  |-- groundtruth/
 |  |  |-- occlusion/
-|  |  |-- uav_info.json
 ```
 
 ### A Concise Example
@@ -145,7 +151,7 @@ experiment.run(
 
 #### How to Evaluate Performance?
 
-For evaluation in OPE mechanism, please use the `report` method of `ExperimentUAV` for this purpose:
+For evaluation in OPE mechanism, please use the `report` method of [`ExperimentUAV`](./uav/experiments/uav.py) for this purpose:
 
 ```Python
 # ... run experiments on dataset ...
@@ -153,6 +159,15 @@ For evaluation in OPE mechanism, please use the `report` method of `ExperimentUA
 # report tracking performance
 experiment.report([tracker.name])
 ```
+
+### Results of SOTA Trackers
+
+|subset|train set|val set|test set|
+|----|----|----|----|
+|precision plot|![](./results/train/overall_precision_plot_1.png)|![](./results/val/overall_precision_plot_1.png)|![](./results/test/overall_precision_plot_1.png)|
+|normalized precision plot|![](./results/train/overall_norm_precision_plot_1.png)|![](./results/val/overall_norm_precision_plot_1.png)|![](./results/test/overall_norm_precision_plot_1.png)|
+|success plot|![](./results/train/overall_success_plot_iou_1.png)|![](./results/val/overall_success_plot_iou_1.png)|![](./results/test/overall_success_plot_iou_1.png)|
+
 
 ### Issues
 
