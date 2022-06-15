@@ -37,7 +37,7 @@ The dataset for the 3rd HISLOPVISION challenge includes 300 sequences, divided i
 
 The dataset download and file organization process is as follows：
 
-- Download three subsets via [Baiduyun disk](https://pan.baidu.com/s/19tq_MM9JjGErLwEfYFaTxQ), the extraction code is **rise**.
+- Download three subsets via [Baiduyun disk](https://pan.baidu.com/s/19tq_MM9JjGErLwEfYFaTxQ), the extraction code is ***rise***.
 
 - Check the number of files in each subset and run the unzipping script. Before unzipping:
 

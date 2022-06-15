@@ -1,7 +1,6 @@
 .*
 *.pyc
 __pycache__/
-data
 data/
 cache/
 reports/
@@ -11,9 +10,4 @@ build/
 dist/
 *.egg-info
 !.gitignore
-dev-videocube/
-dev-test.py
-organize-attribute.py
-instruction.md
--got10k.py
 info/
